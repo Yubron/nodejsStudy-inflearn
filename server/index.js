@@ -1,19 +1,28 @@
 const express = require('express')
+//let cors = require('cors');
+//let cors_origin = ['http://localhost:3000'];
 const app = express()
-const port = 3000
+const port = 5000
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const config = require('./config/key');
 const { auth } = require("./middleware/auth")
 const { User } = require("./models/User");
+
+
 // applicaion/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
 // applicaion/json
 app.use(bodyParser.json());
 app.use(cookieParser());
-
+/* app.use(cors({
+//     origin: cors_origin,
+//     credentials: true,
+ }))*/
 
 const mongoose = require('mongoose')
+
+
 mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology:true, useCreateIndex: true, useFindAndModify:false
 }).then(() => console.log('MongoDB Connected !'))
@@ -21,7 +30,11 @@ mongoose.connect(config.mongoURI, {
 
 app.get('/', (req, res) => {
   res.send('Hello World testetsteasasasas!')
-})
+});
+
+app.get('/api/hello', (req, res) => {
+    res.send("hi");
+});
 
 app.post('/api/users/register', (req, res) => {
     // insert data when register from client
